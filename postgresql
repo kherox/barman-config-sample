@@ -1,0 +1,53 @@
+pg_ctlcluster 11 main start
+
+#change user to postgres
+sudo su - postgres
+
+#create user
+
+createuser -edPs --replication --interactive username
+
+#connect new user
+
+psql -U username -W paswword
+
+#create database
+
+create database db_name;
+
+#grant privileges
+
+GRANT ALL PRIVILEGES ON DATABASE db_name TO username;
+
+
+psql -U alfresco -h database  -c "IDENTIFY_SYSTEM"  replication=1
+
+
+
+psql -c 'SELECT version()' -U barman -h pg postgres
+
+
+psql -U streaming_barman -h database -c "IDENTIFY_SYSTEM"  replication=1
+
+
+ERROR: Unable to start receive-wal process: streaming_archiver option set to 'off' in barman configuration file
+
+
+ psql -c 'SELECT version()' -U alfresco -h database -d postgres
+
+
+disaster
+
+
+https://www.scaleway.com/en/docs/postgresql-backup-with-barman/
+https://www.digitalocean.com/community/tutorials/how-to-back-up-restore-and-migrate-postgresql-databases-with-barman-on-centos-7
+
+http://docs.pgbarman.org/release/2.9/#wal-streaming
+https://blog.oxalide.io/post/barman-backup-and-recovery-manager-for-postgresql/
+
+set barman and postgres user password before
+
+example : sudo passwd barman / postgres
+
+barman recover --remote-ssh-command "ssh postgres@localhost" pgsql 20180911T115925 /var/lib/postgresql/9.5/main
+
